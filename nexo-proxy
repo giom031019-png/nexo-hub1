@@ -1,14 +1,1 @@
-local function fetchURL(url)
-    local proxy = "https://nexo-proxy.yourname.workers.dev/?url=" .. url
 
-    local success, result = pcall(function()
-        return game:HttpGet(proxy)
-    end)
-
-    if not success then
-        warn("Proxy failed:", result)
-        return nil
-    end
-
-    return result
-end
