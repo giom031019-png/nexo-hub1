@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ALLA TRA — José #17</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@300;400;700&family=Barlow:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:#fff;color:#111;font-family:'Barlow',sans-serif;overflow-x:hidden;}
+
+/* TOP BANNER */
+.top-banner{
+  background:#111;color:#fff;
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(3rem,10vw,7rem);
+  letter-spacing:0.08em;
+  padding:1.5rem 2rem 1rem;
+  line-height:1;
+  display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:1rem;
+  border-bottom:6px solid #e63; 
+}
+.top-banner .title-left{display:flex;flex-direction:column;}
+.top-banner .alla{color:#e63;}
+.top-banner .tra{color:#fff;}
+.top-banner .byline{
+  font-family:'IBM Plex Mono',monospace;font-size:clamp(0.6rem,1.5vw,0.9rem);
+  font-weight:300;letter-spacing:0.15em;color:#aaa;margin-top:6px;
+}
+.top-banner .num-big{
+  font-size:clamp(5rem,18vw,13rem);line-height:0.85;
+  color:transparent;-webkit-text-stroke:2px #e63;
+  opacity:0.35;user-select:none;
+}
+
+/* NAV TABS */
+.nav-tabs{
+  display:flex;overflow-x:auto;
+  border-bottom:2px solid #111;
+  background:#f5f5f5;
+  position:sticky;top:0;z-index:100;
+}
+.nav-tabs::-webkit-scrollbar{height:0;}
+.ntab{
+  font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;
+  letter-spacing:0.1em;text-transform:uppercase;
+  padding:14px 20px;cursor:pointer;white-space:nowrap;
+  border-right:1px solid #ddd;border-bottom:3px solid transparent;
+  margin-bottom:-2px;transition:all 0.2s;color:#888;background:none;border-top:none;border-left:none;
+}
+.ntab:hover{color:#111;background:#eee;}
+.ntab.on{color:#e63;border-bottom-color:#e63;background:#fff;}
+
+/* PANELS */
+.panel{display:none;min-height:80vh;}
+.panel.on{display:block;}
+
+/* ====== PREGUNTAS — MAGAZINE LAYOUT ====== */
+#p-preguntas{padding:0;}
+.mag-intro{
+  padding:3rem 2.5rem 2rem;
+  border-bottom:1px solid #ddd;
+  display:flex;align-items:flex-end;gap:3rem;flex-wrap:wrap;
+}
+.mag-intro h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,5vw,4rem);line-height:1;flex:1;min-width:200px;}
+.mag-intro p{font-size:14px;color:#666;max-width:320px;line-height:1.7;font-style:italic;}
+.q-magazine{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid #ddd;}
+.q-mag-item{
+  border-right:1px solid #ddd;border-bottom:1px solid #ddd;
+  padding:0;overflow:hidden;cursor:pointer;
+  transition:background 0.15s;
+  position:relative;
+}
+.q-mag-item:nth-child(even){border-right:none;}
+.q-mag-item:hover{background:#fdf3f0;}
+.q-mag-item.open{background:#111;color:#fff;}
+.q-mag-head{
+  padding:20px 22px 16px;
+  display:flex;align-items:flex-start;gap:12px;
+}
+.q-mag-n{
+  font-family:'Bebas Neue',sans-serif;font-size:2.2rem;line-height:1;
+  color:#e63;opacity:0.4;flex-shrink:0;transition:opacity 0.2s;
+  min-width:44px;
+}
+.q-mag-item.open .q-mag-n{opacity:1;color:#e63;}
+.q-mag-item.open .q-mag-q{color:#fff;}
+.q-mag-q{font-size:13px;font-weight:700;line-height:1.5;padding-top:6px;}
+.q-mag-ans{
+  font-size:13px;line-height:1.7;color:#bbb;
+  padding:0 22px;max-height:0;overflow:hidden;
+  transition:max-height 0.4s ease,padding 0.3s;
+}
+.q-mag-item.open .q-mag-ans{max-height:300px;padding-bottom:20px;}
+.q-mag-bar{
+  height:2px;background:#e63;width:0%;
+  transition:width 0.4s ease;
+}
+.q-mag-item.open .q-mag-bar{width:100%;}
+
+/* ====== HORMONAS — BIG CARDS ====== */
+#p-hormonas{padding:2.5rem;}
+.h-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:0;border:2px solid #111;border-radius:4px;overflow:hidden;}
+.h-card{
+  padding:24px;border-right:1px solid #ddd;border-bottom:1px solid #ddd;
+  position:relative;overflow:hidden;
+  transition:background 0.25s,color 0.25s;
+  cursor:default;
+}
+.h-card:hover{background:#111;color:#fff;}
+.h-card:hover .h-org{color:#aaa;}
+.h-card:hover .h-pill{filter:invert(1);}
+.h-pill{
+  font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;
+  background:#111;color:#fff;padding:3px 10px;border-radius:2px;
+  display:inline-block;margin-bottom:12px;letter-spacing:0.1em;
+}
+.h-name{font-family:'Bebas Neue',sans-serif;font-size:2rem;line-height:1;margin-bottom:4px;}
+.h-org{font-size:12px;color:#888;margin-bottom:10px;font-family:'IBM Plex Mono',monospace;}
+.h-fn{font-size:13px;line-height:1.65;color:inherit;}
+.h-num{
+  position:absolute;bottom:-10px;right:10px;
+  font-family:'Bebas Neue',sans-serif;font-size:6rem;
+  color:rgba(0,0,0,0.04);line-height:1;user-select:none;pointer-events:none;
+}
+.h-card:hover .h-num{color:rgba(255,255,255,0.05);}
+
+/* ====== MASCULINO — NUMBERED LIST ====== */
+#p-masculino{padding:2.5rem;}
+.sys-header{display:flex;align-items:baseline;gap:1rem;margin-bottom:2rem;}
+.sys-header h2{font-family:'Bebas Neue',sans-serif;font-size:3rem;line-height:1;}
+.sys-header span{font-size:13px;color:#888;font-family:'IBM Plex Mono',monospace;}
+.organ-list{display:flex;flex-direction:column;gap:0;border:2px solid #111;border-radius:4px;overflow:hidden;}
+.organ-row{
+  display:grid;grid-template-columns:64px 1fr 2fr;
+  border-bottom:1px solid #ddd;
+  transition:background 0.2s;
+  animation:slideIn 0.5s ease both;
+}
+.organ-row:last-child{border-bottom:none;}
+.organ-row:hover{background:#111;color:#fff;}
+.organ-row:hover .o-fn{color:#ccc;}
+.organ-row:hover .o-num{color:#e63;}
+.o-num{
+  font-family:'Bebas Neue',sans-serif;font-size:2.5rem;line-height:1;
+  color:#ddd;padding:16px;border-right:1px solid #ddd;
+  display:flex;align-items:center;justify-content:center;
+  transition:color 0.2s;
+}
+.organ-row:hover .o-num-border{border-right-color:rgba(255,255,255,0.1);}
+.o-name{
+  font-weight:700;font-size:14px;padding:16px;
+  border-right:1px solid #ddd;display:flex;align-items:center;
+  transition:border-color 0.2s;
+}
+.organ-row:hover .o-name{border-right-color:rgba(255,255,255,0.1);}
+.o-fn{font-size:13px;color:#666;padding:16px;display:flex;align-items:center;line-height:1.55;transition:color 0.2s;}
+@keyframes slideIn{from{opacity:0;transform:translateX(-20px);}to{opacity:1;transform:none;}}
+
+/* ====== FEMENINO — SAME STYLE ====== */
+#p-femenino{padding:2.5rem;}
+
+/* ====== CICLO — HORIZONTAL STRIP ====== */
+#p-ciclo{padding:2.5rem;}
+.ciclo-intro{margin-bottom:2rem;}
+.ciclo-intro h2{font-family:'Bebas Neue',sans-serif;font-size:3rem;line-height:1;margin-bottom:6px;}
+.ciclo-intro p{font-size:13px;color:#888;font-family:'IBM Plex Mono',monospace;}
+.ciclo-strip{display:grid;grid-template-columns:repeat(4,1fr);border:2px solid #111;border-radius:4px;overflow:hidden;margin-bottom:2rem;}
+.cphase{
+  padding:24px 18px;border-right:1px solid #ddd;cursor:pointer;
+  transition:background 0.25s;position:relative;overflow:hidden;
+}
+.cphase:last-child{border-right:none;}
+.cphase::after{content:'';position:absolute;bottom:0;left:0;right:0;height:4px;background:var(--pc);transform:scaleX(0);transform-origin:left;transition:transform 0.3s ease;}
+.cphase.on::after{transform:scaleX(1);}
+.cphase.on{background:#111;color:#fff;}
+.cphase:hover:not(.on){background:#f7f7f7;}
+.cp-label{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--pc);margin-bottom:8px;letter-spacing:0.1em;}
+.cphase.on .cp-label{color:var(--pc);}
+.cp-name{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;line-height:1;margin-bottom:4px;}
+.cp-days{font-size:12px;color:#999;font-family:'IBM Plex Mono',monospace;}
+.cphase.on .cp-days{color:#666;}
+.ciclo-detail{
+  border:2px solid #111;border-radius:4px;padding:28px;
+  min-height:120px;transition:opacity 0.3s;
+}
+.cd-phase{font-family:'Bebas Neue',sans-serif;font-size:2rem;line-height:1;margin-bottom:4px;}
+.cd-hormones{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;}
+.cd-h{font-family:'IBM Plex Mono',monospace;font-size:11px;padding:3px 10px;border:1px solid #ddd;border-radius:2px;color:#888;}
+.cd-body{font-size:14px;line-height:1.75;color:#444;}
+
+/* FOOTER */
+footer{
+  background:#111;color:#fff;padding:3rem 2.5rem;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:2rem;
+}
+.f-left{}
+.f-name{font-family:'Bebas Neue',sans-serif;font-size:3.5rem;line-height:1;}
+.f-name .acc{color:#e63;}
+.f-sub{font-family:'IBM Plex Mono',monospace;font-size:11px;color:#666;margin-top:6px;}
+.f-num{
+  font-family:'Bebas Neue',sans-serif;font-size:8rem;line-height:1;
+  color:transparent;-webkit-text-stroke:1px rgba(230,102,51,0.4);
+}
+
+@media(max-width:600px){
+  .q-magazine{grid-template-columns:1fr;}
+  .q-mag-item{border-right:none;}
+  .ciclo-strip{grid-template-columns:1fr 1fr;}
+  .organ-row{grid-template-columns:44px 1fr;}
+  .o-fn{display:none;}
+  .top-banner{flex-direction:column;}
+}
+</style>
+</head>
+<body>
+
+<!-- TOP BANNER -->
+<div class="top-banner">
+  <div class="title-left">
+    <div>
+      <span class="alla">ALLA </span><span class="tra">TRA</span>
+    </div>
+    <div class="byline">PUBERTAD · HORMONAS · SISTEMAS REPRODUCTORES</div>
+  </div>
+  <div class="num-big">17</div>
+</div>
+
+<!-- NAV -->
+<div class="nav-tabs">
+  <button class="ntab on" onclick="show('preguntas',this)">30 Preguntas</button>
+  <button class="ntab" onclick="show('hormonas',this)">Hormonas</button>
+  <button class="ntab" onclick="show('masculino',this)">S. Masculino</button>
+  <button class="ntab" onclick="show('femenino',this)">S. Femenino</button>
+  <button class="ntab" onclick="show('ciclo',this)">Ciclo Menstrual</button>
+</div>
+
+<!-- PREGUNTAS -->
+<div class="panel on" id="p-preguntas">
+  <div class="mag-intro">
+    <h2>Preguntas<br>Compuestas</h2>
+    <p>Haz clic en cualquier pregunta para revelar la respuesta.</p>
+  </div>
+  <div class="q-magazine" id="qgrid"></div>
+</div>
+
+<!-- HORMONAS -->
+<div class="panel" id="p-hormonas">
+  <div class="sys-header"><h2>Hormonas Sexuales</h2><span>// cuadro 01</span></div>
+  <div class="h-grid">
+    <div class="h-card"><div class="h-num">1</div><div class="h-pill">GnRH</div><div class="h-name">GnRH</div><div class="h-org">Hipotálamo</div><div class="h-fn">Señal de arranque del eje reproductor. Ordena a la hipófisis liberar FSH y LH de forma pulsátil; sin ella, los ovarios y testículos no se activan.</div></div>
+    <div class="h-card"><div class="h-num">2</div><div class="h-pill">FSH</div><div class="h-name">FSH</div><div class="h-org">Hipófisis anterior</div><div class="h-fn">Foliculoestimulante. En la mujer madura los folículos ováricos. En el hombre apoya la producción de espermatozoides dentro de los testículos.</div></div>
+    <div class="h-card"><div class="h-num">3</div><div class="h-pill">LH</div><div class="h-name">LH</div><div class="h-org">Hipófisis anterior</div><div class="h-fn">Luteinizante. Dispara la ovulación en la mujer con un pico brusco. En el hombre estimula las células de Leydig para fabricar testosterona.</div></div>
+    <div class="h-card"><div class="h-num">4</div><div class="h-pill">TESTO</div><div class="h-name">Testosterona</div><div class="h-org">Testículos (células de Leydig)</div><div class="h-fn">Principal hormona masculina. Provoca vello, voz grave, masa muscular y mantiene la producción continua de espermatozoides.</div></div>
+    <div class="h-card"><div class="h-num">5</div><div class="h-pill">ESTRO</div><div class="h-name">Estrógeno</div><div class="h-org">Ovarios</div><div class="h-fn">Principal hormona femenina. Desarrolla senos, regula el ciclo menstrual y engrosa el endometrio para prepararlo para un posible embrión.</div></div>
+    <div class="h-card"><div class="h-num">6</div><div class="h-pill">PROG</div><div class="h-name">Progesterona</div><div class="h-org">Cuerpo lúteo (ovarios)</div><div class="h-fn">Hormona del embarazo. Mantiene el endometrio listo para la implantación; si no hay fecundación, cae y desencadena la menstruación.</div></div>
+  </div>
+</div>
+
+<!-- MASCULINO -->
+<div class="panel" id="p-masculino">
+  <div class="sys-header"><h2>Sistema Reproductor Masculino</h2><span>// cuadro 02</span></div>
+  <div class="organ-list" id="ol-masc"></div>
+</div>
+
+<!-- FEMENINO -->
+<div class="panel" id="p-femenino">
+  <div class="sys-header"><h2>Sistema Reproductor Femenino</h2><span>// cuadro 03</span></div>
+  <div class="organ-list" id="ol-fem"></div>
+</div>
+
+<!-- CICLO -->
+<div class="panel" id="p-ciclo">
+  <div class="ciclo-intro">
+    <h2>Ciclo Menstrual</h2>
+    <p>// duración promedio: 28 días — selecciona una fase</p>
+  </div>
+  <div class="ciclo-strip" id="cstrip"></div>
+  <div class="ciclo-detail" id="cdetail">
+    <div class="cd-phase">Selecciona una fase</div>
+    <div class="cd-body" style="color:#aaa;font-style:italic;">Haz clic en cualquiera de las cuatro fases de arriba para ver qué ocurre y qué hormonas participan.</div>
+  </div>
+</div>
+
+<footer>
+  <div class="f-left">
+    <div class="f-name">Hecho por <span class="acc">José</span></div>
+    <div class="f-sub">PUBERTAD · HORMONAS SEXUALES · SISTEMAS REPRODUCTORES · NÚMERO 17</div>
+  </div>
+  <div class="f-num">17</div>
+</footer>
+
+<script>
+function show(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.ntab').forEach(b => b.classList.remove('on'));
+  document.getElementById('p-' + id).classList.add('on');
+  btn.classList.add('on');
+}
+
+// QUESTIONS
+const QA = [
+  ["¿Qué son las hormonas sexuales y cuál es su función en la reproducción humana?","Son moléculas mensajeras producidas por las gónadas y la hipófisis. Controlan el desarrollo del aparato reproductor, la producción de gametos y los cambios de la pubertad."],
+  ["¿Qué órgano del cerebro libera la hormona GnRH y qué función tiene?","El hipotálamo la secreta de forma pulsátil. La GnRH estimula la hipófisis para que libere FSH y LH, activando el eje reproductor completo."],
+  ["¿Qué son las gonadotropinas y cuáles son las dos principales?","Son hormonas de la hipófisis que actúan sobre las gónadas. Las dos principales son FSH (foliculoestimulante) y LH (luteinizante)."],
+  ["¿Qué función cumplen la FSH y la LH en el cuerpo humano?","FSH estimula la maduración de folículos en la mujer y la espermatogénesis en el hombre. LH provoca la ovulación en la mujer y la producción de testosterona en el hombre."],
+  ["¿Sobre qué órganos actúan las gonadotropinas y qué producen?","Actúan sobre las gónadas: en ovarios estimulan estrógeno y progesterona; en testículos, testosterona y espermatozoides."],
+  ["¿Qué hormona producen los testículos y cuál es su función principal?","Producen testosterona. Regula los caracteres sexuales secundarios masculinos, la espermatogénesis y el deseo sexual."],
+  ["¿Qué hormonas producen los ovarios y qué función tienen en el cuerpo femenino?","Producen estrógenos —que regulan el ciclo y desarrollan caracteres femeninos— y progesterona, que prepara y mantiene el útero durante el embarazo."],
+  ["¿Qué es la pubertad y cuáles cambios ocurren durante esta etapa?","Es la etapa de maduración sexual impulsada por las hormonas. Hay crecimiento rápido, desarrollo de órganos reproductores y aparición de caracteres sexuales secundarios."],
+  ["¿Cuáles son las características sexuales secundarias que aparecen en la pubertad?","Hombres: vello facial, voz grave, masa muscular. Mujeres: senos, caderas más anchas, vello pubiano y axilar, inicio de la menstruación."],
+  ["¿Qué órganos forman el sistema reproductor masculino?","Testículos, epidídimo, conductos deferentes, vesículas seminales, próstata, uretra y pene."],
+  ["¿Qué función cumplen los testículos en el sistema reproductor masculino?","Producen espermatozoides y testosterona. Están en el escroto a temperatura menor para favorecer la espermatogénesis."],
+  ["¿Qué es el epidídimo y cuál es su importancia?","Tubo enrollado sobre el testículo donde los espermatozoides maduran y adquieren movilidad antes de ser eyaculados."],
+  ["¿Qué función realizan los conductos deferentes?","Transportan los espermatozoides del epidídimo a la uretra durante la eyaculación."],
+  ["¿Qué produce la vesícula seminal y para qué sirve?","Produce líquido rico en fructosa que nutre a los espermatozoides y forma ~60% del volumen del semen."],
+  ["¿Qué función tiene la próstata en el sistema reproductor masculino?","Secreta líquido alcalino que neutraliza la acidez de la uretra y la vagina, protegiendo a los espermatozoides."],
+  ["¿Qué es la uretra y cuál es su función en el hombre?","Canal que conduce orina y semen al exterior. Una válvula impide que ambos fluidos salgan simultáneamente."],
+  ["¿Cuáles órganos forman el sistema reproductor femenino?","Ovarios, trompas de Falopio, útero, cérvix, vagina y endometrio."],
+  ["¿Qué función cumple la vagina en el sistema reproductor femenino?","Canal que recibe el pene, permite el flujo menstrual y es el canal de parto."],
+  ["¿Qué es el cérvix o cuello uterino y dónde se encuentra?","Extremo inferior del útero que conecta con la vagina. Su moco varía en el ciclo para facilitar o impedir el paso de espermatozoides."],
+  ["¿Cuál es la función principal del útero?","Órgano donde se implanta y desarrolla el embrión durante los 9 meses de gestación. Sus paredes musculares expulsan al bebé en el parto."],
+  ["¿Qué ocurre en las trompas de Falopio?","Transportan el óvulo al útero y son el lugar habitual de la fecundación por el espermatozoide."],
+  ["¿Qué función cumplen los ovarios?","Liberan óvulos (ovulación) y producen estrógeno y progesterona para regular el ciclo y el embarazo."],
+  ["¿Qué es el ciclo menstrual y cuánto tiempo dura aproximadamente?","Serie de cambios hormonales que preparan el cuerpo femenino para el embarazo cada mes. Dura ~28 días, aunque puede variar entre 21 y 35."],
+  ["¿Qué ocurre durante la fase folicular del ciclo menstrual?","FSH estimula el crecimiento de folículos. Uno domina y produce estrógenos que engrosan el endometrio. Va del día 1 a la ovulación."],
+  ["¿Qué sucede en la fase ovulatoria?","Un pico de LH rompe el folículo maduro (~día 14) liberando el óvulo hacia la trompa. Es el punto de máxima fertilidad."],
+  ["¿Qué ocurre durante la fase lútea?","El folículo vacío se convierte en cuerpo lúteo y secreta progesterona. Sin fecundación, degenera y comienza la menstruación."],
+  ["¿Qué hormonas participan en el ciclo menstrual?","GnRH (hipotálamo), FSH y LH (hipófisis), estrógeno y progesterona (ovarios). Actúan en cadena con retroalimentación."],
+  ["¿Qué relación existe entre la pubertad y el sistema reproductor?","La pubertad activa el eje hormonal que madura los órganos reproductores. Comienza la ovulación y la producción de espermatozoides."],
+  ["¿Por qué son importantes las hormonas sexuales para la reproducción?","Coordinan la maduración de gametos, la ovulación, la implantación y el embarazo. Sin ellas la reproducción no es posible."],
+  ["¿Qué medidas pueden tomarse para cuidar la salud del sistema reproductor?","Higiene adecuada, controles médicos regulares, uso de preservativo, vacuna contra VPH, alimentación sana y evitar el tabaco y el alcohol."]
+];
+
+const qg = document.getElementById('qgrid');
+QA.forEach(([q,a],i) => {
+  const d = document.createElement('div');
+  d.className = 'q-mag-item';
+  d.innerHTML = `<div class="q-mag-bar"></div><div class="q-mag-head"><span class="q-mag-n">${String(i+1).padStart(2,'0')}</span><span class="q-mag-q">${q}</span></div><div class="q-mag-ans">${a}</div>`;
+  d.addEventListener('click', () => d.classList.toggle('open'));
+  qg.appendChild(d);
+});
+
+// ORGANS
+const MASC = [
+  ["Testículos","Producen espermatozoides y testosterona. Están en el escroto a temperatura menor que la corporal para favorecer la espermatogénesis."],
+  ["Epidídimo","Tubo enrollado donde los espermatozoides maduran y adquieren movilidad antes de la eyaculación."],
+  ["Conductos deferentes","Tubos musculares que transportan los espermatozoides del epidídimo a la uretra durante la eyaculación."],
+  ["Vesícula seminal","Produce líquido rico en fructosa que nutre a los espermatozoides y forma la mayor parte del semen."],
+  ["Próstata","Secreta líquido alcalino que protege a los espermatozoides neutralizando la acidez del tracto reproductivo."],
+  ["Uretra","Conduce orina y semen al exterior; una válvula impide que ambos fluidos salgan al mismo tiempo."],
+  ["Pene","Órgano copulador que deposita el semen en la vagina; contiene la uretra en su interior."]
+];
+const FEM = [
+  ["Ovarios","Producen óvulos y secretan estrógeno y progesterona para regular el ciclo menstrual y el embarazo."],
+  ["Trompas de Falopio","Transportan el óvulo al útero; es el lugar habitual donde ocurre la fecundación."],
+  ["Útero","Órgano muscular donde se implanta el embrión y se desarrolla durante los 9 meses de gestación."],
+  ["Cérvix","Cuello del útero conectado a la vagina; su moco varía en el ciclo para controlar el paso de espermatozoides."],
+  ["Vagina","Canal muscular que recibe el pene, permite el flujo menstrual y sirve de canal de parto."],
+  ["Endometrio","Revestimiento interno del útero que se engrosa cada ciclo para recibir un embrión; si no hay fecundación se desprende como menstruación."]
+];
+
+function buildList(data, id) {
+  const el = document.getElementById(id);
+  data.forEach(([name, fn], i) => {
+    const row = document.createElement('div');
+    row.className = 'organ-row';
+    row.style.animationDelay = (i * 0.07) + 's';
+    row.innerHTML = `<div class="o-num">${String(i+1).padStart(2,'0')}</div><div class="o-name">${name}</div><div class="o-fn">${fn}</div>`;
+    el.appendChild(row);
+  });
+}
+buildList(MASC, 'ol-masc');
+buildList(FEM, 'ol-fem');
+
+// CICLO
+const PHASES = [
+  {name:"Menstrual",days:"Días 1–5",color:"#e63",hormones:["Estrógeno ↓","Progesterona ↓"],desc:"El endometrio se desprende y es expulsado como flujo menstrual. Los niveles hormonales están en su mínimo. Las contracciones uterinas pueden causar cólicos. Marca el día 1 oficial del ciclo."},
+  {name:"Folicular",days:"Días 1–13",color:"#5ab4ff",hormones:["FSH ↑","Estrógeno ↑"],desc:"La FSH estimula varios folículos del ovario. Uno se vuelve dominante y produce estrógenos en aumento que engrosan el endometrio preparándolo para un posible embrión."},
+  {name:"Ovulatoria",days:"Día ~14",color:"#00e5a0",hormones:["LH pico","Estrógeno pico"],desc:"Un disparo brusco de LH rompe el folículo maduro y libera el óvulo hacia la trompa. Es el período de máxima fertilidad; el óvulo es viable unas 12–24 horas."},
+  {name:"Lútea",days:"Días 15–28",color:"#b84dff",hormones:["Progesterona ↑","Estrógeno moderado"],desc:"El folículo vacío se convierte en cuerpo lúteo y produce progesterona para mantener el endometrio. Sin fecundación, el cuerpo lúteo degenera, las hormonas caen y comienza una nueva menstruación."}
+];
+
+const strip = document.getElementById('cstrip');
+const detail = document.getElementById('cdetail');
+PHASES.forEach((p,i) => {
+  const d = document.createElement('div');
+  d.className = 'cphase';
+  d.style.setProperty('--pc', p.color);
+  d.innerHTML = `<div class="cp-label">${String(i+1).padStart(2,'0')} —</div><div class="cp-name">${p.name}</div><div class="cp-days">${p.days}</div>`;
+  d.addEventListener('click', () => {
+    document.querySelectorAll('.cphase').forEach(c => c.classList.remove('on'));
+    d.classList.add('on');
+    const hTags = p.hormones.map(h => `<span class="cd-h">${h}</span>`).join('');
+    detail.style.opacity = '0';
+    setTimeout(() => {
+      detail.innerHTML = `<div class="cd-phase" style="color:${p.color}">${p.name}</div><div class="cd-hormones">${hTags}</div><div class="cd-body">${p.desc}</div>`;
+      detail.style.opacity = '1';
+    }, 180);
+  });
+  strip.appendChild(d);
+});
+</script>
+</body>
+</html>
